@@ -25,8 +25,8 @@ arp = rdpcap('arp.cap')[0]
 # 0020   c0 a8 01 c8
 # on crée donc une frame avec le même début (arp)
 # et ensuite création d'une trame arp avec scapy
-cleartext = '\xaa\xaa\x03\x00\x00\x00\x08\x06\x00\x01\x08\x00\x06'/ARP(op="who-has",psrc="192.168.1.100", pdst="192.168.1.200")
-clear_icv = binascii.crc32(cleartext).to_bytes(4,byteorder='little')
+cleartext = '\xaa\xaa\x03\x00\x00\x00\x08\x06\x00\x01\x08\x00\x06'+str(ARP(op="who-has",psrc="192.168.1.100", pdst="192.168.1.200").payload)
+clear_icv = binascii.crc32(bytes(cleartext,'utf-8')).to_bytes(4,byteorder='little')
 # rc4 seed est composé de IV+clé
 seed = arp.iv+key
 
