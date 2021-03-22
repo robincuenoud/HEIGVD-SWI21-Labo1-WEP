@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-""" Manually encrypt a wep message with a WEP key"""
+""" Manually encrypt a wep message with a WEP key with fragments"""
 
 __author__      = "Robin Cuénoud Mülhauser Florian"
 __version__ 	= "1.0"

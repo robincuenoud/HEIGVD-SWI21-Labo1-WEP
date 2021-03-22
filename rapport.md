@@ -21,6 +21,3 @@ Le script fonctionne de cette manière :
 ## 2. Chiffrement manuel de WEP
 
 On procède exactement de la même manière sauf qu'au lieu de lire une capture chiffrée on va créer nous même notre capture en clair puis la chiffrer. 
-
-Pour créer le paquet arp cette [documentation](https://0xbharath.github.io/art-of-packet-crafting-with-scapy/scapy/creating_packets/index.html) est suivie. 
-
