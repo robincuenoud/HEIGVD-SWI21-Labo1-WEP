@@ -3,7 +3,7 @@
 
 """ Manually encrypt a wep message with a WEP key with fragments"""
 
-__author__      = "Robin Cuénoud Mülhauser Florian"
+__author__      = "Robin Cuénoud, Florian Mülhauser"
 __version__ 	= "1.0"
 __status__ 		= "Prototype"
 
@@ -28,21 +28,39 @@ b"\xc0\xa8\x02\xff"
 
 iv = b"\x0c\x4d\x5c"
 
-print(arp.iv.hex())
-clear_icv = binascii.crc32(cleartext).to_bytes(4,byteorder='little')
+# On a besoin de 3 fragements
+nbFragments = 3
+
+# On regarde la taille voulue des fragements (pour qu'ils soient égal)
+length = len(cleartext)/fragments
+
+# On separe le clearText en 3
+splittedText = (cleartext[:length], cleartext[length:2*length], cleartext[2*length:])
+
 # rc4 seed est composé de IV+clé
 seed = iv+key
 
 # chiffrement RC4
 cipher = RC4(seed, streaming=False)
 
-ciphertext=cipher.crypt(cleartext + clear_icv)
+for i in range(nbFragments):
+    fragment = splittedText[i]
 
-# le ICV est les derniers 4 octets - je le passe en format Long big endian
-arp.wepdata = ciphertext[:-4]
-arp.icv = struct.unpack('!L', ciphertext[-4:])[0]
+    clear_icv = binascii.crc32(fragment).to_bytes(4,byteorder='little')
+    ciphertext = cipher.crypt(fragment + clear_icv)
 
-wrpcap("created_arp.cap", arp)
+    # on met a jour le numéro de fragment
+    arp.SC = i
+
+    # le ICV est les derniers 4 octets - je le passe en format Long big endian
+    arp.wepdata = ciphertext[:-4]
+    arp.icv = struct.unpack('!L', ciphertext[-4:])[0]
+
+    # On met a jour le bit qui indique s'il reste des fragment
+    if(i == nbFragments - 1): arp.FCfield.MF = 0
+    else: arp.FCfield.MF = 1
+
+    wrpcap("created_fragment_arp.cap", arp, append = True)
 
 
 sendp(arp)

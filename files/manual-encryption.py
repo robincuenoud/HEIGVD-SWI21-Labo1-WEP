@@ -3,7 +3,7 @@
 
 """ Manually encrypt a wep message with a WEP key"""
 
-__author__      = "Robin Cuénoud Mülhauser Florian"
+__author__      = "Robin Cuénoud Florian Mülhauser"
 __version__ 	= "1.0"
 __status__ 		= "Prototype"
 
