@@ -32,10 +32,10 @@ iv = b"\x0c\x4d\x5c"
 nbFragments = 3
 
 # On regarde la taille voulue des fragements (pour qu'ils soient égal)
-length = len(cleartext)/fragments
+length = int(len(cleartext)/nbFragments)
 
 # On separe le clearText en 3
-splittedText = (cleartext[:length], cleartext[length:2*length], cleartext[2*length:])
+splittedText = (cleartext[:length], cleartext[length:2* length], cleartext[2* length:])
 
 # rc4 seed est composé de IV+clé
 seed = iv+key
@@ -63,4 +63,4 @@ for i in range(nbFragments):
     wrpcap("created_fragment_arp.cap", arp, append = True)
 
 
-sendp(arp)
+#sendp(arp)
