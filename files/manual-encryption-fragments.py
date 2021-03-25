@@ -60,6 +60,9 @@ for i in range(nbFragments):
     if(i == nbFragments - 1): arp.FCfield.MF = 0
     else: arp.FCfield.MF = 1
 
+    # On doit réinitialiser la taille du paquet pour que ça se mette a jour correctement en fonction de notre séparation
+    arp[RadioTap].len = None
+
     wrpcap("created_fragment_arp.cap", arp, append = True)
 
 
